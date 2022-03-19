@@ -1,2 +1,2 @@
 # InventoryManagement
-Inventory management subsystem
+Inventory management subsystem. Current under progress
