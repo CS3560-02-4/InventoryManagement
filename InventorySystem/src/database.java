@@ -20,8 +20,7 @@ public class database {
             ResultSet rs = myStmt.executeQuery(sql);
 
             if (myConn != null) {
-                System.out
-                        .println("Successfully connected to MySQL database test");
+                System.out.println("Successfully connected to MySQL database test yayyy");
             }
 
             while (rs.next())
