@@ -5,7 +5,7 @@ import java.sql.Statement;
 import java.sql.*;
 
 
-/* set the CLASSPATH to the current folder and
+/*
 install the .jar file at
 C:\Program Files\MySQL\MySQL Connector J\mysql-connector-java-5.1.32-bin.jar.
   by going to File -> Program structure -> modules -> dependencies -> (press + button) ->
