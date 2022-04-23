@@ -16,23 +16,48 @@ public class database {
     public static void main(String[] args){
     String url = "jdbc:mysql://127.0.0.1:3306/?user=root";
     String user = "root";
-    String password = "12669Rancho.";
+    String password = "admin";
     Connection myConn;
 
     {
         try {
             myConn = DriverManager.getConnection(url,user,password);
-            Statement myStmt = myConn.createStatement();
-            String sql = "select * from our_company.product_1";
-            ResultSet rs = myStmt.executeQuery(sql);
-
             if (myConn != null) {
-                System.out.println("Successfully connected to MySQL database test yayyy");
+                System.out.println("Successfully connected to MySQL database test");
             }
 
-            while (rs.next())
+            //  ---INSERT STATEMENT---
+            String sql = "insert into our_company.users (user_ID, first_name, last_name, email_ID, password, last_login_date, access) values (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, 1);
+            statement.setString(2, "Bill");
+            statement.setString(3, "Gates");
+            statement.setString(4, "bg@gmail.com");
+            statement.setString(5, "bgpass");
+            statement.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            statement.setInt(7, 1);
 
-                System.out.println(rs.getString( "product_name"));
+            int rowsInserted = statement.executeUpdate();
+            if(rowsInserted > 0){
+                System.out.println("New user inserted successfully!");
+            }
+
+            //  ---SELECT STATEMENT---
+            sql = "select * from our_company.users";
+            Statement myStmt = myConn.createStatement();
+            ResultSet rs = myStmt.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String email = rs.getString(4);
+                String pass = rs.getString(5);
+
+                String output = "User #%d: %s - %s - %s - %s";
+                System.out.println(String.format(output, id, firstName, lastName, email, pass));
+            }
+
 
 
         } catch (SQLException ex) {
