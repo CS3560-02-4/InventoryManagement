@@ -16,6 +16,37 @@ public class database {
          static String user = "root";
          static String password = "12669Rancho.";
 
+    static void updateStock(String productID, String newStock){
+        String sql_execute = "update our_company.product_1 set in_stock=\'"+newStock+"\' where product_ID="+productID;
+        {
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 Statement statemt = conn.createStatement();) {
+
+                statemt.executeUpdate(sql_execute);
+                System.out.println("Database updated successfully ");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } // try catch block
+    }
+
+    static void updateProductID(String currentProductID, String newProductID){
+        String sql_execute = "update our_company.product_1 set product_ID=\'"+newProductID+"\' where product_ID="+currentProductID;
+        {
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 Statement statemt = conn.createStatement();) {
+
+                statemt.executeUpdate(sql_execute);
+                System.out.println("Database updated successfully ");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } // try catch block
+
+    } //static void updateProductID
+
 
     static void updateProductName(String productName, String productID) {
         String sql_execute = "update our_company.product_1 set product_name=\'"+productName+"\' where product_ID="+productID;
@@ -32,9 +63,10 @@ public class database {
         } // try catch block
     } //updateProductName function
 
+
+
     public static void main(String[] args) {
         Connection myConn;
-
 
         {
             try {
@@ -53,7 +85,9 @@ public class database {
                 throw new RuntimeException(ex);
             }
 
-            updateProductName("scott", "2");
+            updateProductName("james", "5");
+            updateProductID("5", "3");
+            updateStock("3", "20");
 
         } // try catch block
 
