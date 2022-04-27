@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.*;
 
-
 /*
 install the .jar file at
 C:\Program Files\MySQL\MySQL Connector J\mysql-connector-java-5.1.32-bin.jar.
@@ -13,35 +12,50 @@ C:\Program Files\MySQL\MySQL Connector J\mysql-connector-java-5.1.32-bin.jar.
 
 public class database {
 
-    public static void main(String[] args){
-    String url = "jdbc:mysql://127.0.0.1:3306/?user=root";
-    String user = "root";
-    String password = "12669Rancho.";
-    Connection myConn;
+         static String url = "jdbc:mysql://127.0.0.1:3306/?user=root"; // location of mySQL file
+         static String user = "root";
+         static String password = "12669Rancho.";
 
-    {
-        try {
-            myConn = DriverManager.getConnection(url,user,password);
-            Statement myStmt = myConn.createStatement();
-            String sql = "select * from our_company.product_1";
-            ResultSet rs = myStmt.executeQuery(sql);
 
-            if (myConn != null) {
-                System.out.println("Successfully connected to MySQL database test yayyy");
+    static void updateProductName(String productName, String productID) {
+        String sql_execute = "update our_company.product_1 set product_name=\'"+productName+"\' where product_ID="+productID;
+        {
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 Statement sttmt = conn.createStatement();) {
+
+                sttmt.executeUpdate(sql_execute);
+                System.out.println("Database updated successfully ");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-            while (rs.next())
+        } // try catch block
+    } //updateProductName function
 
-                System.out.println(rs.getString( "product_name"));
-
-
-        } catch (SQLException ex) {
-            System.out.println("An error occurred while connecting MySQL databse");
-                            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
-    }
+    public static void main(String[] args) {
+        Connection myConn;
 
 
-}
-}
+        {
+            try {
+                myConn = DriverManager.getConnection(url, user, password);
+                Statement myStmt = myConn.createStatement();
+
+                String sql = "select * from our_company.product_1"; // query statement
+                ResultSet rs = myStmt.executeQuery(sql); //executes query
+
+                while (rs.next())
+                    System.out.println(rs.getString("product_name"));
+
+            } catch (SQLException ex) {
+                System.out.println("An error occurred while connecting MySQL databse");
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
+
+            updateProductName("scott", "2");
+
+        } // try catch block
+
+    } //public static void main(String[] args)
+} // public class database
