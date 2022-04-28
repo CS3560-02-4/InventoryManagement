@@ -19,6 +19,7 @@ public class database extends javax.swing.JFrame {
     static String user = "root";
     static String password = "admin";
     static Connection myConn;
+    private boolean newProduct = true;
     
     public database() {
         initComponents();
@@ -450,7 +451,29 @@ public class database extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductButtonActionPerformed
-        // TODO add your handling code here:
+        int row = productTable.getSelectedRow();
+        String queryID = productTable.getModel().getValueAt(row, 0).toString();
+        
+        try{
+            Statement stmt = myConn.createStatement();
+            String query = "select * from our_company.product where product_ID=" + queryID;
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            
+            pNameField.setText(rs.getString("product_name"));
+            pDescriptionField.setText(rs.getString("description"));
+            pCategoryField.setText(rs.getString("category"));
+            pPriceField.setText(rs.getInt("price")+"");
+            pStockField.setText(rs.getInt("in_stock")+"");
+            pMinStockField.setText(rs.getInt("min_stock")+"");
+            pMaxStockField.setText(rs.getInt("max_stock")+"");
+        }catch (SQLException ex){System.out.println("Error tring to update product");}
+        
+        
+        newProduct = false;
+        
+        addProductFrame.setTitle("Update Product");
+        addProductFrame.setVisible(true);
     }//GEN-LAST:event_updateProductButtonActionPerformed
 
     private void pNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pNameFieldActionPerformed
@@ -474,7 +497,9 @@ public class database extends javax.swing.JFrame {
         pStockField.setText("");
         pMinStockField.setText("");
         pMaxStockField.setText("");
+        newProduct = true;
         
+        addProductFrame.setTitle("Add Product");
         addProductFrame.setVisible(true);
     }//GEN-LAST:event_addProductButtonActionPerformed
 
@@ -487,7 +512,10 @@ public class database extends javax.swing.JFrame {
     }//GEN-LAST:event_pCancelButtonActionPerformed
 
     private void pConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pConfirmButtonActionPerformed
-        addProduct();
+        if(newProduct)
+            addProduct();
+        else
+            updateProduct();
         addProductFrame.setVisible(false);
     }//GEN-LAST:event_pConfirmButtonActionPerformed
 
@@ -597,6 +625,52 @@ public class database extends javax.swing.JFrame {
         updateProductTable();
     }
     
+    //Updates the selected product on the database
+    public void updateProduct(){
+        int row = productTable.getSelectedRow();
+        String queryID = productTable.getModel().getValueAt(row, 0).toString();
+        try {
+            myConn = DriverManager.getConnection(url,user,password);
+
+            Statement stmt = myConn.createStatement();
+            String query = "SELECT * FROM our_company.product where product_ID="+queryID;
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+
+            int id = rs.getInt("product_ID");
+            int orderID = rs.getInt("order_ID");
+            String description = pDescriptionField.getText();
+            double price = Double.parseDouble(pPriceField.getText());
+            String name = pNameField.getText();
+            int stock = Integer.parseInt(pStockField.getText());
+            int maxStock = Integer.parseInt(pMaxStockField.getText());
+            int minStock = Integer.parseInt(pMinStockField.getText());
+            String category = pCategoryField.getText();
+
+            String sql = "update our_company.product set "
+                    + "description ='" + description + "',"
+                    + "price =" + price + ","
+                    + "product_name='" + name + "',"
+                    + "in_stock=" + stock + ","
+                    + "min_stock=" + minStock + ","
+                    + "max_stock=" + maxStock + ","
+                    + "category='" + category + "'"
+                    + " where product_ID=" + queryID;
+            System.out.println(sql);
+
+            PreparedStatement p = myConn.prepareStatement(sql);
+            p.execute();
+            
+        } catch (SQLException ex) {
+            System.out.println("An error occurred while connecting MySQL databse");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
+        
+        updateProductTable();
+        System.out.println("Product successfully updated");
+    }
+    
     //Helps Update the GUI whenever the product table is changed
     //Notes: Maybe add some arguments for sorting later
     public void updateProductTable(){
@@ -610,7 +684,7 @@ public class database extends javax.swing.JFrame {
             DefaultTableModel table = new DefaultTableModel(new String [] {"ProductID", "orderID", "Description", "Price", "Name", "In Stock", "Max Stock", "Min Stock", "Category"},0);
             
             while (rs.next()) { 
-                int  id = rs.getInt("product_ID");
+                int id = rs.getInt("product_ID");
                 int orderID = rs.getInt("order_ID");
                 String description = rs.getString("description");
                 int price = rs.getInt("Price");
