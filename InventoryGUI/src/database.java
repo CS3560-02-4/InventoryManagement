@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.*;
+import javax.swing.table.*;
 
 public class database extends javax.swing.JFrame {
     
@@ -18,12 +19,17 @@ public class database extends javax.swing.JFrame {
     static String user = "root";
     static String password = "admin";
     static Connection myConn;
-        
+    
+    DefaultTableModel table;
+    
     public database() {
         initComponents();
         this.setLocationRelativeTo(null);
         addProductFrame.setLocationRelativeTo(null);
         addUserFrame.setLocationRelativeTo(null);
+        
+        //Initialize Product Table
+        updateProductTable();
     }
 
     /**
@@ -347,6 +353,11 @@ public class database extends javax.swing.JFrame {
         });
 
         removeProductButton.setText("Remove Product");
+        removeProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeProductButtonActionPerformed(evt);
+            }
+        });
 
         productBackButton.setText("Back");
 
@@ -494,6 +505,10 @@ public class database extends javax.swing.JFrame {
         addUserFrame.setVisible(false);
     }//GEN-LAST:event_uCancelButtonActionPerformed
 
+    private void removeProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeProductButtonActionPerformed
+        deleteProduct();
+    }//GEN-LAST:event_removeProductButtonActionPerformed
+
     public void addUser(){
         
         try {
@@ -549,7 +564,18 @@ public class database extends javax.swing.JFrame {
             //  ---INSERT STATEMENT---
             String sql = "insert into our_company.product (product_ID, order_ID, description, Price, product_name, in_stock, max_stock, min_stock, category) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
-            statement.setInt(1, productCount+1);
+            
+            boolean unique = false;
+            while(unique){
+            try{
+                productCount++;
+                statement.setInt(1, productCount);
+                unique = true;
+            }catch(SQLException ex){
+                ex.printStackTrace();
+                System.out.println("Error: Duplicate ID = " + productCount+1);
+            }}
+            
             statement.setInt(2, 1); //not sure how to link to order_ID
             statement.setString(3, pDescriptionField.getText());
             statement.setDouble(4, Double.parseDouble(pPriceField.getText()));
@@ -570,28 +596,59 @@ public class database extends javax.swing.JFrame {
             throw new RuntimeException(ex);
         }
         
-        
+        updateProductTable();
     }
     
-    public void updateTable(){
+    public void updateProductTable(){
                 
         try {
+            myConn = DriverManager.getConnection(url,user,password);
             PreparedStatement pst = myConn.prepareStatement("select * from our_company.product"); 
             ResultSet rs = pst.executeQuery();
             int i = 0; 
-            if (rs.next()) { 
-            String  uname = rs.getString("contact_id"); 
-            String  email = rs.getString("first_name");
-            String  pass = rs.getString("last_name");
-            String cou = rs.getString("phone"); 
-            productTable.getModel().setValueAt(uname, WIDTH, ICONIFIED);
-            i++;
-        }
+            
+            table = new DefaultTableModel(new String [] {"ProductID", "orderID", "Description", "Price", "Name", "In Stock", "Max Stock", "Min Stock", "Category"},0);
+            
+            while (rs.next()) { 
+                int  id = rs.getInt("product_ID");
+                int orderID = rs.getInt("order_ID");
+                String description = rs.getString("description");
+                int price = rs.getInt("Price");
+                String name = rs.getString("product_name");
+                int stock = rs.getInt("in_stock");
+                int maxStock = rs.getInt("max_stock");
+                int minStock = rs.getInt("min_stock");
+                
+                table.addRow(new Object[]{id, orderID, description, price, name, stock, maxStock, minStock});
+                productTable.setModel(table);
+            
+            }
         }catch (SQLException ex) {
                 System.out.println("An error occurred while connecting MySQL databse");
                                 ex.printStackTrace();
                 throw new RuntimeException(ex);
-            }
+        }
+        
+    }
+    
+    public void deleteProduct(){
+        int row = productTable.getSelectedRow();
+        String queryID = productTable.getModel().getValueAt(row, 0).toString();
+        String query = "delete from our_company.product where product_ID=" + queryID;
+        
+        try {
+            myConn = DriverManager.getConnection(url,user,password);
+            PreparedStatement pst = myConn.prepareStatement(query); 
+            pst.execute();
+
+
+        }catch (SQLException ex) {
+                System.out.println("An error occurred while connecting MySQL databse");
+                                ex.printStackTrace();
+                throw new RuntimeException(ex);
+        }
+        
+        updateProductTable();
     }
     
     /**
@@ -628,6 +685,7 @@ public class database extends javax.swing.JFrame {
                 new database().setVisible(true);
             }
         });
+        
         
         /*
         {
