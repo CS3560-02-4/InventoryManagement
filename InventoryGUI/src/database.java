@@ -20,8 +20,6 @@ public class database extends javax.swing.JFrame {
     static String password = "admin";
     static Connection myConn;
     
-    DefaultTableModel table;
-    
     public database() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -70,7 +68,6 @@ public class database extends javax.swing.JFrame {
         pPriceText1 = new javax.swing.JLabel();
         uLastNameField = new javax.swing.JTextField();
         uPasswordField = new javax.swing.JPasswordField();
-        jTextField1 = new javax.swing.JTextField();
         productFrame = new javax.swing.JPanel();
         updateProductButton = new javax.swing.JButton();
         addProductButton = new javax.swing.JButton();
@@ -331,8 +328,6 @@ public class database extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTextField1.setText("jTextField1");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Product Table");
 
@@ -363,7 +358,17 @@ public class database extends javax.swing.JFrame {
 
         productTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "1", "Ball", "5", "Ball", "50", "100", "0", "Sports"},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
@@ -483,6 +488,7 @@ public class database extends javax.swing.JFrame {
 
     private void pConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pConfirmButtonActionPerformed
         addProduct();
+        addProductFrame.setVisible(false);
     }//GEN-LAST:event_pConfirmButtonActionPerformed
 
     private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
@@ -509,6 +515,7 @@ public class database extends javax.swing.JFrame {
         deleteProduct();
     }//GEN-LAST:event_removeProductButtonActionPerformed
 
+    //Adds a user to the database based on the info inputted in the addUserFrame
     public void addUser(){
         
         try {
@@ -547,6 +554,7 @@ public class database extends javax.swing.JFrame {
         
     }
     
+    //Adds a product into the database based on the info inputted in the addProductFrame
     public void addProduct(){
         
         try {
@@ -556,26 +564,16 @@ public class database extends javax.swing.JFrame {
             }
             
             Statement stmt = myConn.createStatement();
-            String query = "select count(*) from our_company.product";
+            String query = "SELECT * FROM our_company.product ORDER BY product_ID DESC LIMIT 1";
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
-            int productCount = rs.getInt(1);
+            int recentProductID = rs.getInt("product_ID");
 
             //  ---INSERT STATEMENT---
             String sql = "insert into our_company.product (product_ID, order_ID, description, Price, product_name, in_stock, max_stock, min_stock, category) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
             
-            boolean unique = false;
-            while(unique){
-            try{
-                productCount++;
-                statement.setInt(1, productCount);
-                unique = true;
-            }catch(SQLException ex){
-                ex.printStackTrace();
-                System.out.println("Error: Duplicate ID = " + productCount+1);
-            }}
-            
+            statement.setInt(1, recentProductID+1);
             statement.setInt(2, 1); //not sure how to link to order_ID
             statement.setString(3, pDescriptionField.getText());
             statement.setDouble(4, Double.parseDouble(pPriceField.getText()));
@@ -599,6 +597,8 @@ public class database extends javax.swing.JFrame {
         updateProductTable();
     }
     
+    //Helps Update the GUI whenever the product table is changed
+    //Notes: Maybe add some arguments for sorting later
     public void updateProductTable(){
                 
         try {
@@ -607,7 +607,7 @@ public class database extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
             int i = 0; 
             
-            table = new DefaultTableModel(new String [] {"ProductID", "orderID", "Description", "Price", "Name", "In Stock", "Max Stock", "Min Stock", "Category"},0);
+            DefaultTableModel table = new DefaultTableModel(new String [] {"ProductID", "orderID", "Description", "Price", "Name", "In Stock", "Max Stock", "Min Stock", "Category"},0);
             
             while (rs.next()) { 
                 int  id = rs.getInt("product_ID");
@@ -618,8 +618,9 @@ public class database extends javax.swing.JFrame {
                 int stock = rs.getInt("in_stock");
                 int maxStock = rs.getInt("max_stock");
                 int minStock = rs.getInt("min_stock");
+                String category = rs.getString("category");
                 
-                table.addRow(new Object[]{id, orderID, description, price, name, stock, maxStock, minStock});
+                table.addRow(new Object[]{id, orderID, description, price, name, stock, maxStock, minStock, category});
                 productTable.setModel(table);
             
             }
@@ -631,6 +632,8 @@ public class database extends javax.swing.JFrame {
         
     }
     
+    //Deletes a product from the database
+    //Note: GUI isn't updating when deleting the last product
     public void deleteProduct(){
         int row = productTable.getSelectedRow();
         String queryID = productTable.getModel().getValueAt(row, 0).toString();
@@ -649,6 +652,7 @@ public class database extends javax.swing.JFrame {
         }
         
         updateProductTable();
+        System.out.println("Product successfully removed");
     }
     
     /**
@@ -767,7 +771,6 @@ public class database extends javax.swing.JFrame {
     private javax.swing.JFrame addUserFrame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton pCancelButton;
     private javax.swing.JTextField pCategoryField;
     private javax.swing.JLabel pCategoryText;
