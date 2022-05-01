@@ -35,6 +35,8 @@ public class database extends javax.swing.JFrame {
         userFrame.setLocationRelativeTo(null);
         
         loginFrame.setVisible(true);
+        resetSearchProductButton.setVisible(false);
+        resetSearchUserButton.setVisible(false);
         
         //Initialize Product Table
         updateProductTable();
@@ -88,9 +90,10 @@ public class database extends javax.swing.JFrame {
         userBackButton = new javax.swing.JButton();
         userTableScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
-        userSearchField = new javax.swing.JTextField();
+        searchUserField = new javax.swing.JTextField();
         searchUserButton = new javax.swing.JButton();
         addUserButton1 = new javax.swing.JButton();
+        resetSearchUserButton = new javax.swing.JButton();
         loginFrame = new javax.swing.JFrame();
         usernameText = new javax.swing.JLabel();
         passwordText = new javax.swing.JLabel();
@@ -109,6 +112,7 @@ public class database extends javax.swing.JFrame {
         searchProductField = new javax.swing.JTextField();
         searchProductButton = new javax.swing.JButton();
         viewUsersButton = new javax.swing.JButton();
+        resetSearchProductButton = new javax.swing.JButton();
 
         addProductFrame.setTitle("Add Product");
         addProductFrame.setMinimumSize(new java.awt.Dimension(370, 370));
@@ -384,11 +388,23 @@ public class database extends javax.swing.JFrame {
         userTableScrollPane1.setViewportView(userTable);
 
         searchUserButton.setText("Search");
+        searchUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUserButtonActionPerformed(evt);
+            }
+        });
 
         addUserButton1.setText("Add User");
         addUserButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addUserButton1ActionPerformed(evt);
+            }
+        });
+
+        resetSearchUserButton.setText("Reset Search");
+        resetSearchUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetSearchUserButtonActionPerformed(evt);
             }
         });
 
@@ -406,7 +422,9 @@ public class database extends javax.swing.JFrame {
                         .addComponent(userBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(userSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(resetSearchUserButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchUserField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)
                         .addComponent(searchUserButton))
                     .addGroup(userPanelLayout.createSequentialGroup()
@@ -421,8 +439,9 @@ public class database extends javax.swing.JFrame {
             .addGroup(userPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(userSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchUserButton))
+                    .addComponent(searchUserField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchUserButton)
+                    .addComponent(resetSearchUserButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(userTableScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -451,7 +470,6 @@ public class database extends javax.swing.JFrame {
         loginFrame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         loginFrame.setTitle("Login");
         loginFrame.setMinimumSize(new java.awt.Dimension(300, 180));
-        loginFrame.setPreferredSize(new java.awt.Dimension(300, 140));
 
         usernameText.setText("Username: ");
 
@@ -522,7 +540,6 @@ public class database extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Product Table");
         setMinimumSize(new java.awt.Dimension(600, 550));
-        setPreferredSize(new java.awt.Dimension(650, 500));
 
         productFrame.setMinimumSize(new java.awt.Dimension(600, 500));
         productFrame.setPreferredSize(new java.awt.Dimension(600, 500));
@@ -591,11 +608,23 @@ public class database extends javax.swing.JFrame {
         productTableScrollPane.setViewportView(productTable);
 
         searchProductButton.setText("Search");
+        searchProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchProductButtonActionPerformed(evt);
+            }
+        });
 
         viewUsersButton.setText("View Users");
         viewUsersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewUsersButtonActionPerformed(evt);
+            }
+        });
+
+        resetSearchProductButton.setText("Reset Search");
+        resetSearchProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetSearchProductButtonActionPerformed(evt);
             }
         });
 
@@ -616,6 +645,8 @@ public class database extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productFrameLayout.createSequentialGroup()
                         .addComponent(viewUsersButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(resetSearchProductButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchProductField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)
                         .addComponent(searchProductButton))
@@ -631,7 +662,8 @@ public class database extends javax.swing.JFrame {
                 .addGroup(productFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchProductField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchProductButton)
-                    .addComponent(viewUsersButton))
+                    .addComponent(viewUsersButton)
+                    .addComponent(resetSearchProductButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(productTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -828,6 +860,34 @@ public class database extends javax.swing.JFrame {
         //else deny access
     }//GEN-LAST:event_viewUsersButtonActionPerformed
 
+    private void searchUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserButtonActionPerformed
+        String querySearch = searchUserField.getText();
+        if(!querySearch.equals("")){
+            searchUser(querySearch);
+            resetSearchUserButton.setVisible(true);
+        }
+    }//GEN-LAST:event_searchUserButtonActionPerformed
+
+    private void searchProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProductButtonActionPerformed
+        String querySearch = searchProductField.getText();
+        if(!querySearch.equals("")){
+            searchProduct(querySearch);
+            resetSearchProductButton.setVisible(true);
+        }
+    }//GEN-LAST:event_searchProductButtonActionPerformed
+
+    private void resetSearchProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSearchProductButtonActionPerformed
+        searchProduct("");
+        searchProductField.setText("");
+        resetSearchProductButton.setVisible(false);
+    }//GEN-LAST:event_resetSearchProductButtonActionPerformed
+
+    private void resetSearchUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSearchUserButtonActionPerformed
+        searchUser("");
+        searchUserField.setText("");
+        resetSearchUserButton.setVisible(false);
+    }//GEN-LAST:event_resetSearchUserButtonActionPerformed
+
     //Adds a user to the database based on the info inputted in the addUserFrame
     public void addUser(){
         
@@ -924,15 +984,49 @@ public class database extends javax.swing.JFrame {
                 int access = rs.getInt("access");
                 
                 table.addRow(new Object[]{id, firstName, lastName, email, password, date, access});
-                userTable.setModel(table);
             
             }
+            userTable.setModel(table);
+            
         }catch (SQLException ex) {
                 System.out.println("An error occurred while connecting MySQL databse");
                                 ex.printStackTrace();
                 throw new RuntimeException(ex);
         }
         
+    }
+    
+    public void searchUser(String querySearch){
+        try {
+            myConn = DriverManager.getConnection(url,user,password);
+            //how query should look like: select * from our_company.product where product_name LIKE '%Red%' OR description LIKE '%Red%'
+            PreparedStatement pst = myConn.prepareStatement("select * from our_company.users where first_name LIKE '%" + querySearch + "%' "
+                                                                                               + "OR last_name LIKE '%"+querySearch+"%' "
+                                                                                               + "OR user_ID LIKE '%"+querySearch+"%' "
+                                                                                               + "OR access LIKE '%"+querySearch+"%' ");
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel table = new DefaultTableModel(new String [] {"ID", "First Name", "Last Name", "Email", "Password", "Last Login Date", "Access"},0);
+            
+            while (rs.next()) { 
+                int id = rs.getInt("user_ID");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String email = rs.getString("email_ID");
+                String password = rs.getString("password");
+                Date date = rs.getDate("last_login_date");
+                int access = rs.getInt("access");
+                
+                table.addRow(new Object[]{id, firstName, lastName, email, password, date, access});
+            
+            }
+            userTable.setModel(table);
+            
+        }catch (SQLException ex) {
+                System.out.println("An error occurred while connecting MySQL databse");
+                                ex.printStackTrace();
+                throw new RuntimeException(ex);
+        }
     }
     
     public void deleteUser(){
@@ -1045,7 +1139,6 @@ public class database extends javax.swing.JFrame {
     }
     
     //Helps Update the GUI whenever the product table is changed
-    //Notes: Maybe add some arguments for sorting later
     public void updateProductTable(){
                 
         try {
@@ -1065,17 +1158,55 @@ public class database extends javax.swing.JFrame {
                 int maxStock = rs.getInt("max_stock");
                 int minStock = rs.getInt("min_stock");
                 String category = rs.getString("category");
-                
+
                 table.addRow(new Object[]{id, orderID, description, price, name, stock, maxStock, minStock, category});
-                productTable.setModel(table);
-            
+                
             }
+            productTable.setModel(table);
+            
         }catch (SQLException ex) {
                 System.out.println("An error occurred while connecting MySQL databse");
                                 ex.printStackTrace();
                 throw new RuntimeException(ex);
         }
         
+    }
+    
+    public void searchProduct(String querySearch){
+        try {
+            myConn = DriverManager.getConnection(url,user,password);
+            //how query should look like: select * from our_company.product where product_name LIKE '%Red%' OR description LIKE '%Red%'
+            PreparedStatement pst = myConn.prepareStatement("select * from our_company.product where product_name LIKE '%" + querySearch + "%' "
+                                                                                               + "OR description LIKE '%"+querySearch+"%' "
+                                                                                               + "OR product_ID LIKE '%"+querySearch+"%' "
+                                                                                               + "OR category LIKE '%"+querySearch+"%' "
+                                                                                               + "OR price LIKE '%"+querySearch+"%' "); 
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel table = new DefaultTableModel(new String [] {"ProductID", "orderID", "Description", "Price", "Name", "In Stock", "Max Stock", "Min Stock", "Category"},0);
+            
+
+            while (rs.next()) { 
+                int id = rs.getInt("product_ID");
+                int orderID = rs.getInt("order_ID");
+                String description = rs.getString("description");
+                double price = rs.getDouble("Price");
+                String name = rs.getString("product_name");
+                int stock = rs.getInt("in_stock");
+                int maxStock = rs.getInt("max_stock");
+                int minStock = rs.getInt("min_stock");
+                String category = rs.getString("category");
+
+                table.addRow(new Object[]{id, orderID, description, price, name, stock, maxStock, minStock, category});
+                
+            }
+            productTable.setModel(table);
+            
+        }catch (SQLException ex) {
+                System.out.println("An error occurred while connecting MySQL databse");
+                                ex.printStackTrace();
+                throw new RuntimeException(ex);
+        }
     }
     
     //Deletes a product from the database
@@ -1244,9 +1375,12 @@ public class database extends javax.swing.JFrame {
     private javax.swing.JScrollPane productTableScrollPane;
     private javax.swing.JButton removeProductButton;
     private javax.swing.JButton removeUserButton;
+    private javax.swing.JButton resetSearchProductButton;
+    private javax.swing.JButton resetSearchUserButton;
     private javax.swing.JButton searchProductButton;
     private javax.swing.JTextField searchProductField;
     private javax.swing.JButton searchUserButton;
+    private javax.swing.JTextField searchUserField;
     private javax.swing.JTextField uAccessField;
     private javax.swing.JLabel uAccessText;
     private javax.swing.JButton uCancelButton;
@@ -1264,7 +1398,6 @@ public class database extends javax.swing.JFrame {
     private javax.swing.JButton userBackButton;
     private javax.swing.JFrame userFrame;
     private javax.swing.JPanel userPanel;
-    private javax.swing.JTextField userSearchField;
     private javax.swing.JTable userTable;
     private javax.swing.JScrollPane userTableScrollPane1;
     private javax.swing.JTextField usernameField;

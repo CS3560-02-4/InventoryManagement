@@ -389,7 +389,9 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="userSearchField" min="-2" pref="146" max="-2" attributes="0"/>
+                              <Component id="resetSearchUserButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="searchUserField" min="-2" pref="146" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                               <Component id="searchUserButton" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -410,8 +412,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="userSearchField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="searchUserField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="searchUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="resetSearchUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="userTableScrollPane1" min="-2" pref="352" max="-2" attributes="0"/>
@@ -523,12 +526,15 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JTextField" name="userSearchField">
+            <Component class="javax.swing.JTextField" name="searchUserField">
             </Component>
             <Component class="javax.swing.JButton" name="searchUserButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Search"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchUserButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="addUserButton1">
               <Properties>
@@ -536,6 +542,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addUserButton1ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="resetSearchUserButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reset Search"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetSearchUserButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -714,6 +728,8 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="viewUsersButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="resetSearchProductButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="searchProductField" min="-2" pref="146" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           <Component id="searchProductButton" min="-2" max="-2" attributes="0"/>
@@ -735,6 +751,7 @@
                       <Component id="searchProductField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="searchProductButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="viewUsersButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="resetSearchProductButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="productTableScrollPane" min="-2" pref="352" max="-2" attributes="0"/>
@@ -874,6 +891,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Search"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchProductButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="viewUsersButton">
           <Properties>
@@ -881,6 +901,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewUsersButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="resetSearchProductButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reset Search"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetSearchProductButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
